@@ -31,7 +31,7 @@ def parse(html_cont):
     # 得到最后一个的二级标题和正文
     data['last'] = re.findall(temp_test, html_cont)
     cont.append(data)
-
+    # 创建一个文件夹，存放关键词在百度百科上的内容，命名以关键词.txt存放在文件夹中
     test = open('D:/百度百科爬取语料/'+str(word)+'.txt', 'a+', encoding='utf-8')
     for data in cont:
         test.writelines(data['main_title'])
@@ -51,7 +51,7 @@ def write_sec_para_text(html_cont, test):
     pre = soup.find("h2").find("span").get_text()
     test.writelines('\n\n'+'  '+soup.find("h2").get_text()[len(pre):]+'\n')#二级标题前空2个格
 
-    #判断是否含有三级标题
+    # 判断是否含有三级标题
     if(len(soup.find_all('div', class_="para-title level-3")) > 0):
         first = re.findall(r'<div class="para-title level-2" label-module="para-title">[\s\S]+?<div class="para-title level-3" label-module="para-title">', str(soup))
         fsoup = BeautifulSoup(first[0],'html.parser')
@@ -78,10 +78,11 @@ def write_para_text(paraSoup, test):
 headers = {
     'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'
 }
-
+# 在目标路径创建一个需要查找的关键词txt文档，用于关键词在百度百科上的爬取
 with open('d:\关键词汇总.txt','r',encoding='utf-8-sig') as y:
     sum1,sum2 = 0,0
     gjc = y.readlines()
+    # 创建一个文档用于存放在百度百科上面没有相关内容关键词
     with open('d:\百度百科中没有的关键词.txt','a+',encoding='utf-8-sig') as f:
         for guanjc in gjc[:]:
             word = guanjc.strip('\n')
